@@ -4,6 +4,7 @@
 
 /* Variables */
 $feed: feed;
+$text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
 
 /* Global style */
 body {
@@ -27,23 +28,28 @@ nav {
 .wrapper {
 	width: 100%;
 	background: #e8e8e8 url("images/bg-top.svg") no-repeat scroll center 0/100% auto;
+	padding-top: 67px;
 
 	/* Feed section */
 	&-#{$feed} {
 		width: 100%;
 		background: url("images/bg-bottom.svg") no-repeat scroll center bottom/100% auto;
+		padding: 0 0 185px 0;
 
 		.#{$feed} {
+			text-align: center;
 			// Description on top
 			&_desc {
 				color: $white;
-				font-size: $font-size-large;
-				text-align: center;
+				padding: 0 0 75px 0;
+				text-shadow: $text-shadow;
 				&__heading {
 					font-size: $font-size-supper;
-					text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+					font-weight: 300;
+					padding-bottom: 10px;
 				}
 				&__info {
+					font-size: $font-size-medium;
 					a {
 						color: $white;
 					}
@@ -63,24 +69,43 @@ nav {
 					}
 				}
 			}
-			// Feed list
+			// Feed list & items
 			&_list {
+				padding: 0 0 77px 0;
 				&__item {
-					min-height: 289px;
-					background: rgba(255,255,255, 0.9);
+					@include feed-item();
 				}
 			}
 			// Buttons
 			.btn {
 				border-radius: 0;
 				text-transform: uppercase;
+				font-weight: 700;
+				font-size: $font-size-medium;
+				padding: 17px 143px;
 			}
 		}
 	}
 
 	/* Content paragraph section */
-	.content {
+	&-content {
+		background: #fff;
 		font-size: $font-size-medium-plus;
 		font-weight: 300;
+		padding-top: 80px;
+
+		.content {
+			&__lg {
+				font-size: $font-size-large;
+				line-height: 36px;
+				padding-bottom: 30px;
+			}
+			&__md {
+				> p {
+					line-height: 27px;
+					margin-bottom: 30px;
+				}
+			}
+		}
 	}
 }

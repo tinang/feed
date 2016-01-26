@@ -7,10 +7,20 @@ function feedCtrl($scope, growl, $stateParams, $state) {
 }
 
 module.exports = {
-  url:         "/customers/:customerId/displays?page",
-  templateUrl: "display/list.html",
-  controller:  feedCtrl,
-  resolve:     {
+  url: 				"/feed/:hashtag",
+  views: 			{
+						    'feed': {
+						      templateUrl: "feed/list.html"
+						    },
+						    'top-nav': {
+						      templateUrl: "static/top-nav.html"
+						    },
+						    'content': {
+						    	templateUrl: "static/block-content.html"
+						    }
+	},
+  controller: feedCtrl,
+  resolve:    {
     
-  }
+	}
 };

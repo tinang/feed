@@ -26,3 +26,10 @@
   width: -webkit-max-content;
   width: max-content;
 }
+
+@mixin feed-item() {
+  min-height: 289px;
+  background: rgba(255,255,255, 0.9);
+  margin-bottom: 10px;
+  border-radius: 0 0 6px 6px;
+}

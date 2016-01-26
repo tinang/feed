@@ -7,6 +7,8 @@ require("angular-bootstrap");
 
 var mod = angular.module("mokusApp", ["ui.router", "ngSanitize", "ui.bootstrap"]);
 
+var feedCtrl = require("feed/list.js");
+
 // Show/hide spinner icon when starting a new state
 initLoader.$inject = ["$rootScope"];
 function initLoader($rootScope) {
@@ -29,6 +31,10 @@ states.$inject = ["$stateProvider", "$urlRouterProvider", "$locationProvider"];
 function states($stateProvider, $urlRouterProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 
+  $urlRouterProvider.when("",  "/feed/programming"); // assuming that we are in default trend is #programming
+  $urlRouterProvider.when("/", "/feed/programming");
+
+  $stateProvider.state("feed", feedCtrl);
 }
 
 mod.config(states);

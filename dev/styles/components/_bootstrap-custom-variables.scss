@@ -57,7 +57,7 @@ $font-family-open-san:    'Open Sans', sans-serif;
 
 $font-size-base:          14px !default;
 $font-size-supper:        ceil(($font-size-base * 2.85)) !default; // ~40px
-$font-size-large:         ceil(($font-size-base * 1.25)) !default; // ~28px
+$font-size-large:         ceil(($font-size-base * 2)) !default; // ~28px
 $font-size-medium-plus:   ceil(($font-size-base * 1.43)) !default; // ~20px
 $font-size-medium:        ceil(($font-size-base * 1.25)) !default; // ~18px
 $font-size-bigger: 				ceil(($font-size-base * 1.07)) !default; // ~15px
@@ -387,7 +387,7 @@ $navbar-default-toggle-border-color:       #ddd !default;
 // Reset inverted navbar basics
 $navbar-inverse-color:                      $white !default;
 $navbar-inverse-bg:                         $gray-dark !default;
-$navbar-inverse-border:                     darken($navbar-inverse-bg, 10%) !default;
+$navbar-inverse-border:                     #000 !default;
 
 // Inverted navbar links
 $navbar-inverse-link-color:                 $white !default;
