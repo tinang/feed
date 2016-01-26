@@ -1,0 +1,86 @@
+// ======================================================
+//  MAIN STYLES: all custom styles for app
+// ======================================================
+
+/* Variables */
+$feed: feed;
+
+/* Global style */
+body {
+	padding-top: 55px;
+}
+
+/* Header section */
+nav {
+	.nav {
+		li {
+			a {
+				&::before {
+					content: '#';
+				}
+			}
+		}
+	}
+}
+
+/* Main content */
+.wrapper {
+	width: 100%;
+	background: #e8e8e8 url("images/bg-top.svg") no-repeat scroll center 0/100% auto;
+
+	/* Feed section */
+	&-#{$feed} {
+		width: 100%;
+		background: url("images/bg-bottom.svg") no-repeat scroll center bottom/100% auto;
+
+		.#{$feed} {
+			// Description on top
+			&_desc {
+				color: $white;
+				font-size: $font-size-large;
+				text-align: center;
+				&__heading {
+					font-size: $font-size-supper;
+					text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+				}
+				&__info {
+					a {
+						color: $white;
+					}
+					span {
+						&::after {
+							content: ' | ';
+						}
+						&:first-child {
+							font-weight: 500;
+						}
+						&:last-child {
+							font-weight: 300;
+							&::after {
+								content: '';
+							}
+						}
+					}
+				}
+			}
+			// Feed list
+			&_list {
+				&__item {
+					min-height: 289px;
+					background: rgba(255,255,255, 0.9);
+				}
+			}
+			// Buttons
+			.btn {
+				border-radius: 0;
+				text-transform: uppercase;
+			}
+		}
+	}
+
+	/* Content paragraph section */
+	.content {
+		font-size: $font-size-medium-plus;
+		font-weight: 300;
+	}
+}

@@ -1,0 +1,28 @@
+// ========
+//  MIXINS
+// ========
+
+
+@mixin position($position, $top: null, $right: $top, $bottom: $top, $left: $right) {
+  @if $position != null { position: $position; }
+  @if $top      != null { top:      $top;      }
+  @if $right    != null { right:    $right;    }
+  @if $bottom   != null { bottom:   $bottom;   }
+  @if $left     != null { left:     $left;     }
+}
+
+@mixin centered {
+  @include position(fixed, 50%, 0, 0, 50%);
+  transform: translate(-50%, -50%);
+  transition: all .3s ease;
+}
+
+@mixin shadow($top, $right, $bottom, $left) {
+  box-shadow: $top $right $bottom $left rgba(0,0,0,0.1);
+}
+
+@mixin maxcontent() {
+  width: -moz-max-content;
+  width: -webkit-max-content;
+  width: max-content;
+}
