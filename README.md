@@ -1,15 +1,15 @@
-# Mokus Twitter Mini App
-Render twitter feed
+# Tweet Trend Mini App
+Render tweets by trend
 
 ## Development
 
 ```
-git clone git@github.com:tinang/mokus.git
+git clone git@github.com:tinang/tweetapp.git
 sudo npm install
-sudo npm update -g bower /* skip if version is from 1.7.1 */
+sudo npm update -g bower // skip if version is from 1.7.1
 bower install
-gulp default /* including these tasks: webpack, styles, templates, copy, stuffs */
-gulp serve /* serve app if it's any js/css/html change*/
+gulp default // including these tasks: webpack, styles, templates, copy, stuffs
+gulp serve // serve app if it's any js/css/html change
 
 ```
 
