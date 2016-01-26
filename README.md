@@ -19,7 +19,7 @@ Just copy `dist` folder to your root path
 
 ## Demo
 
-
+Check `demo` [here] (http://tinang.github.io/tweetapp/demo/index.html "Demo")
 
 ## More Detail
 
