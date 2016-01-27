@@ -34,12 +34,15 @@ states.$inject = ["$stateProvider", "$urlRouterProvider", "$locationProvider"];
 function states($stateProvider, $urlRouterProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 
-  $urlRouterProvider.when("",  "/feed"); // assuming that we are in default trend is #programming
-  $urlRouterProvider.when("/", "/feed");
+  var defaultUrl = "/feed/programming"; // assuming that we are in default trend is #programming
+
+  $urlRouterProvider.when("",  defaultUrl);
+  $urlRouterProvider.when("/", defaultUrl);
 
   // home is root controller
   $stateProvider.state("root", home);
   $stateProvider.state("root.feed", feed);
+  $urlRouterProvider.otherwise(defaultUrl);
 }
 
 mod.config(states);

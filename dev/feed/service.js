@@ -16,7 +16,7 @@ function feedService($http, $twitterApi) {
     },
     // get tweets by specific hashtag
     getTweetsByHashtag: function(hashtag) {
-      $twitterApi.searchTweets(hashtag, {count: 6}).then(responseData);
+      // $twitterApi.searchTweets(hashtag, {count: 6}).then(responseData);
     }
   }
 }

@@ -34,7 +34,7 @@ var webpackConfig = {
     alias: {
       "angular":           "bower_components/angular/angular.min.js",
       "angular-sanitize":  "bower_components/angular-sanitize/angular-sanitize.min.js",
-      "ui-router":         "bower_components/ui-router/release/angular-ui-router.min.js",
+      "ui-router":         "bower_components/ui-router/release/angular-ui-router.js",
       "angular-bootstrap": "bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js",
       "angular-growl":     "bower_components/angular-growl-2/build/angular-growl.min.js",
       "ng-twitter-api":    "bower_components/ng-twitter-api/dist/ng-twitter-api.min.js",
