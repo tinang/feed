@@ -79,7 +79,7 @@ nav {
 					@for $i from 1 through $max {
 						// delay to showing each item by index
 						&:nth-child(2n + #{$i}) {
-							animation-delay: ($i - 1) * 1s;
+							animation-delay: ($i - 1)/3 * 1s;
 						}
 					}
 				}

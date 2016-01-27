@@ -36,9 +36,8 @@ var webpackConfig = {
       "angular-sanitize":  "bower_components/angular-sanitize/angular-sanitize.min.js",
       "ui-router":         "bower_components/ui-router/release/angular-ui-router.js",
       "angular-bootstrap": "bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js",
-      "angular-growl":     "bower_components/angular-growl-2/build/angular-growl.min.js",
       "ng-twitter-api":    "bower_components/ng-twitter-api/dist/ng-twitter-api.min.js",
-      "jsSHA":             "bower_components/jsSHA/src/sha1.js"
+      "jsSHA":             "bower_components/jsSHA/src/sha1.js",
     }
   },
   plugins: [
@@ -93,8 +92,11 @@ gulp.task("stuffs", function () {
           use: [pngquant()]
       }))
       .pipe(gulp.dest('dist/images'));
+
   gulp.src(["dev/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/**"]).pipe(gulp.dest("dist/fonts/bootstrap"));
   gulp.src(["dev/dummy/**"]).pipe(gulp.dest("dist/dummy"));
+  gulp.src(["dev/bower_components/oauth-js/dist/oauth.min.js"]).pipe(gulp.dest("dist/js"));
+
   return gulp.src(["dev/fonts/**"]).pipe(gulp.dest("dist/fonts"));
 });
 

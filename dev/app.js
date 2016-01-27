@@ -9,6 +9,8 @@ require("ng-twitter-api");
 // registering and retrieving necessary modules
 var mod = angular.module("mokusApp", ["ui.router", "ngSanitize", "ui.bootstrap", "ngTwitter"]);
 
+// require all necessary states
+var auth = require("home/auth");
 var home = require("home/home");
 var feed = require("feed/list");
 

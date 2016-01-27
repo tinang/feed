@@ -10,7 +10,18 @@ function feedCtrl($scope, $stateParams, $filter, feedService, tweets) {
 
   // get tweets by hashtag
   $scope.tweets = tweets;
-  console.log(tweets);
+  console.log('Feed: ', tweets);
+
+  $scope.tweets = []; //array of tweets
+
+  feedService.initialize();
+
+  //using the OAuth authorization result get the latest 20 tweets from twitter for the user
+  feedService.getLatestTweets(10).then(function(data) {
+    console.log(data);
+  }, function() {
+    console.log('error');
+  });
 }
 
 module.exports = {

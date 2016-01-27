@@ -13,7 +13,9 @@
     "angular-bootstrap": "^1.1.0",
     "angular-growl-2": "^0.7.9",
     "ng-twitter-api": "^0.1.5",
-    "animate.css": "^3.5.0"
+    "animate.css": "^3.5.0",
+    "angular-oauth2": "3.0.1",
+    "oauthio-js"
   },
   "resolutions": {
     "angular": "1.4.9"
