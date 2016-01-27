@@ -9,8 +9,6 @@ require("ng-twitter-api");
 // registering and retrieving necessary modules
 var mod = angular.module("mokusApp", ["ui.router", "ngSanitize", "ui.bootstrap", "ngTwitter"]);
 
-// include states
-// var auth = require("home/auth");
 var home = require("home/home");
 var feed = require("feed/list");
 
@@ -44,12 +42,5 @@ function states($stateProvider, $urlRouterProvider, $locationProvider) {
   $stateProvider.state("root.feed", feed);
 }
 
-// Config twitter api
-// configTweetApi.$inject = ["$twitterApi"];
-// function configTweetApi($twitterApi) {
-  // $twitterApi.configure('O8EbM93iRY7cEffowYDRL7KCM', 'NjjeWr9BoHkbOGhEjKUSwNJ2UpzeX6cjyW5wC7LVsFZfZMODai', '18350055-RLe98E8gLxyZpdqCnqQfzbn8ce6hwF2odQrfMGepc');
-// }
-
 mod.config(states);
-// mod.config(configTweetApi);
 mod.run(initLoader);

@@ -27,10 +27,11 @@ Check `demo` [here] (http://tinang.github.io/tweetapp/demo/index.html "Demo")
   * Bootstrap Sass with custom variables `bootstrap-custom-variables.scss`
   * Animate.css is a cross-browser library of CSS animations
   * Gulp and its plugins
+  * Bower to install third-party libraries
   * Others: check out detail on `package.json` and `bower.json`
 
 2. What's inside development **dev**?
-  * **dev** is used for development project with structural
+  * **dev** is used for development project with separated modules
   * `index.html` is main template file, the default starting point
   * `app.js` is the main javascript file, init app, includes necessary components, define states
   * `styles` folder is all sass css files
