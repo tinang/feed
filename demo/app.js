@@ -4837,7 +4837,7 @@
 	    getHashtags: function() {
 	      return $http({
 	        method: "GET",
-	        url: "http://tinang.github.io/tweetapp/demo/dummy/hashtags.json"
+	        url: "dummy/hashtags.json"
 	      }).then(responseData);
 	    },
 	    // get tweets by specific hashtag
