@@ -6,7 +6,7 @@ Render tweets by trend
 ```
 git clone git@github.com:tinang/tweetapp.git
 sudo npm install
-sudo npm update -g bower // skip if version is from 1.7.1
+sudo npm update -g bower // skip if version is from 1.7.5
 bower install
 gulp default // including these tasks: webpack, styles, templates, copy, stuffs
 gulp serve // serve app if it's any js/css/html change
@@ -14,8 +14,7 @@ gulp serve // serve app if it's any js/css/html change
 ```
 
 ## Production
-
-Just copy `dist` folder to your root path
+After running `gulp default`, production `dist` will be created, then just copy `dist` folder and run app
 
 ## Demo
 

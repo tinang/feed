@@ -1,0 +1,20 @@
+<!-- Head Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" ng-if="listHashtags.length > 0">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed pull-left" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" ng-click="isCollapsed = !isCollapsed">
+        <span class="sr-only">Toggle nav</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse" uib-collapse="!isCollapsed">
+      <ul class="nav navbar-nav">
+        <li ng-repeat="hashtagItem in listHashtags" ui-sref-active="active">
+          <a ui-sref="root.feed({hashtag: hashtagItem.hashtag})">{{ hashtagItem.hashtag }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav><!--/.navbar -->

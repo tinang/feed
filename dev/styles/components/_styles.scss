@@ -5,6 +5,7 @@
 /* Variables */
 $feed: feed;
 $text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+$max: 6; // limited number items per each request
 
 /* Global style */
 body {
@@ -16,6 +17,7 @@ nav {
 	.nav {
 		li {
 			a {
+				outline: 0;
 				&::before {
 					content: '#';
 				}
@@ -54,6 +56,7 @@ nav {
 						color: $white;
 					}
 					span {
+						animation-delay: 3s;
 						&::after {
 							content: ' | ';
 						}
@@ -72,8 +75,21 @@ nav {
 			// Feed list & items
 			&_list {
 				padding: 0 0 77px 0;
+				&_wrapper {
+					@for $i from 1 through $max {
+						// delay to showing each item by index
+						&:nth-child(2n + #{$i}) {
+							animation-delay: ($i - 1) * 1s;
+						}
+					}
+				}
 				&__item {
+					// default style for item
 					@include feed-item();
+					// random special item
+					&.special {
+						border: 2px solid rgb((random(256)-1), (random(256)-1), (random(256)-1));
+					}
 				}
 			}
 			// Buttons
@@ -82,7 +98,10 @@ nav {
 				text-transform: uppercase;
 				font-weight: 700;
 				font-size: $font-size-medium;
-				padding: 17px 143px;
+				padding: 18px 0;
+				letter-spacing: 1px;
+				width: 469px;
+				max-width: 98%;
 			}
 		}
 	}
@@ -98,7 +117,7 @@ nav {
 			&__lg {
 				font-size: $font-size-large;
 				line-height: 36px;
-				padding-bottom: 30px;
+				padding-bottom: 89px;
 			}
 			&__md {
 				> p {

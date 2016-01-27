@@ -14,6 +14,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Mokus Mini App">
 
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> -->
     <link rel="stylesheet" href="main.css">
 
     <script src="app.js"></script>
@@ -27,19 +28,7 @@
       <i class="fa fa-spinner fa-spin fa-5x"></i>
     </div>
 
-    <div class="wrapper">
-      <!-- Top Fixed Navigation -->
-      <ui-view name="top-nav"></ui-view>
-
-      <div class="main">
-        <!-- List tweets -->
-        <ui-view name="feed"></ui-view>
-
-        <!-- Block content -->
-        <ui-view name="content"></ui-view>
-      </div><!--/.main -->
-
-    </div><!--/.wrapper -->
+    <ui-view></ui-view>
 
   </body>
 </html>

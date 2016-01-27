@@ -36,7 +36,9 @@ var webpackConfig = {
       "angular-sanitize":  "bower_components/angular-sanitize/angular-sanitize.min.js",
       "ui-router":         "bower_components/ui-router/release/angular-ui-router.js",
       "angular-bootstrap": "bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js",
-      "angular-growl":     "bower_components/angular-growl-2/build/angular-growl.min.js"
+      "angular-growl":     "bower_components/angular-growl-2/build/angular-growl.min.js",
+      "ng-twitter-api":    "bower_components/ng-twitter-api/dist/ng-twitter-api.min.js",
+      "jsSHA":             "bower_components/jsSHA/src/sha1.js"
     }
   },
   plugins: [
@@ -92,6 +94,7 @@ gulp.task("stuffs", function () {
       }))
       .pipe(gulp.dest('dist/images'));
   gulp.src(["dev/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/**"]).pipe(gulp.dest("dist/fonts/bootstrap"));
+  gulp.src(["dev/dummy/**"]).pipe(gulp.dest("dist/dummy"));
   return gulp.src(["dev/fonts/**"]).pipe(gulp.dest("dist/fonts"));
 });
 
@@ -101,7 +104,7 @@ gulp.task("templates", function() {
     .pipe(templateCache({
       module: "mokusApp",
       base:   path.join(__dirname, "dev"),
-      templateHeader: "\"use strict\"; angular.module(\"<%= module %>\"<%= standalone %>).run([\"$templateCache\", function($templateCache) {"
+      templateHeader: "\"use strict\"; angular.module(\"<%= module %>\").run([\"$templateCache\", function($templateCache) {"
     }))
     .pipe(gulp.dest("dist"));
 });

@@ -4,15 +4,19 @@ function responseData(resp) {
   return resp.data;
 }
 
-feedService.$inject = ["$http"];
-function feedService($http) {
+feedService.$inject = ["$http", "$twitterApi"];
+function feedService($http, $twitterApi) {
   return {
-    query: function(opts) {
+    // Get list hashtags from dummy data
+    getHashtags: function() {
       return $http({
         method: "GET",
-        url: "",
-        params: opts
+        url: "dummy/hashtags.json"
       }).then(responseData);
+    },
+    // get tweets by specific hashtag
+    getTweetsByHashtag: function(hashtag) {
+      $twitterApi.searchTweets(hashtag, {count: 6}).then(responseData);
     }
   }
 }
@@ -20,13 +24,17 @@ function feedService($http) {
 angular.module('mokusApp')
   .factory('feedService', feedService);
 
-queryFeeds.$inject = ["feedService", "$stateParams"];
-function queryFeeds(feedService, $stateParams) {
-  return feedService.query($stateParams.feedType, {
-          feedType: $stateParams.feedType
-  });
+queryHashtags.$inject = ["feedService"];
+function queryHashtags(feedService) {
+  return feedService.getHashtags();
+}
+
+queryTweetsByHashtag.$inject = ["$stateParams", "feedService"];
+function queryTweetsByHashtag($stateParams, feedService) {
+  return feedService.getTweetsByHashtag($stateParams.hashtag);
 }
 
 module.exports = {
-  query: queryFeeds
+  getHashtags: queryHashtags,
+  getTweets: queryTweetsByHashtag
 }
