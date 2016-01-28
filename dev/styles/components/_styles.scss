@@ -65,7 +65,7 @@ body {
 					@for $i from 1 through $max {
 						// delay to showing each item by index
 						&:nth-child(2n + #{$i}) {
-							animation-delay: ($i - 1)/2 * 1s;
+							animation-delay: ($i - 1)/1.5 * 1s;
 						}
 					}
 				}
@@ -74,11 +74,7 @@ body {
 					@include feed-item();
 					// random special item
 					&.special {
-						@for $i from 1 through $max {
-							&:nth-child(2n + #{$i}) {
-								border-top: 9px solid rgb((random(256) - $i), (random(256) - $i), (random(256) - $i));
-							}
-						}
+						border-top: 9px solid rgb((random(256)-1), (random(256)-1), (random(256)-1));
 					}
 				}
 			}

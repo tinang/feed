@@ -16,7 +16,7 @@
 
     <div class="feed_list row" ng-if="tweets.length">
       <div ng-repeat="tweet in tweets" class="feed_list_wrapper col-md-8 animated fadeInLeft">
-      	<div class="feed_list__item" ng-class="tweet.specialItem ? 'special': ''">
+      	<div class="feed_list__item" ng-class="tweet.specialColor ? 'special': ''" style="border-color: {{tweet.specialColor}}">
 
           <div class="profile clearfix">
             <div class="pull-left">

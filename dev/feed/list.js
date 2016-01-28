@@ -30,11 +30,9 @@ function feedCtrl($rootScope, $scope, $stateParams, $filter, feedService, growl,
 
       var count = data.length;
       if (count) {
-        // make random item for data
+        // make random item is special for data
         var rand = Math.floor((Math.random() * count));
-        console.log(rand);
-        data[rand].specialItem = true;
-        console.log(data);
+        data[rand].specialColor = '#'+Math.floor(Math.random()*16777215).toString(16);
 
         // the first time
         if ($scope.tweets.length === 0) {
