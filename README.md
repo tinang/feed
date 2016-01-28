@@ -13,7 +13,8 @@ gulp serve // serve app if it's any js/css/html change
 ```
 
 ## Production
-After running `gulp default`, production `dist` will be created, then just copy `dist` folder and run app
+After running `gulp default`, production `dist` will be created, then just copy `dist` folder and run app.
+If app is not root path, please update `base` url on `index.html`
 
 ## Demo
 Please **allow popup** to provide authorized access to Twitter Api.

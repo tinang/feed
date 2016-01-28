@@ -1,0 +1,37 @@
+<!doctype html>
+<html ng-app="mokusApp" class="no-js" ng-strict-di>
+  <head>
+    <meta charset="utf-8">
+
+    <title>Mokus Mini App</title>
+
+    <base href="/">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Mokus Mini App">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="main.css">
+
+    <script src="js/oauth.min.js"></script>
+    <script src="app.js"></script>
+    <script src="templates.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Overlay for loading -->
+    <div ng-show="loading" class="throbber">
+      <i class="fa fa-spinner fa-spin fa-5x"></i>
+    </div>
+    <!-- Notification message -->
+    <div growl></div>
+
+    <ui-view></ui-view>
+
+  </body>
+</html>
