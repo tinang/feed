@@ -1,4 +1,4 @@
-# Tweet Trend Mini App
+# Tweet Mini App
 Render tweets by hashtag
 
 ## Development
