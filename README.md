@@ -17,7 +17,7 @@ After running `gulp default`, production `dist` will be created, then just copy 
 
 ## Demo
 Please **allow popup** to provide authorized access to Twitter Api.
-Check `demo` [here] (http://tinang.github.io/tweetapp/demo "Demo")
+Check [`demo`] (http://tinang.github.io/tweetapp/demo "Demo")
 
 ## More Detail
 
