@@ -16,7 +16,7 @@ gulp serve // serve app if it's any js/css/html change
 After running `gulp default`, production `dist` will be created, then just copy `dist` folder and run app
 
 ## Demo
-A popup will be open to provide authorized access to Twitter Api. Please **allow this popup** on brower.__
+Please **allow popup** to provide authorized access to Twitter Api.
 Check `demo` [here] (http://tinang.github.io/tweetapp/demo "Demo")
 
 ## More Detail
