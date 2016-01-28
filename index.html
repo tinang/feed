@@ -31,14 +31,14 @@
           <h1>
 <a id="tweet-trend-mini-app" class="anchor" href="#tweet-trend-mini-app" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tweet Trend Mini App</h1>
 
-<p>Render tweets by trend</p>
+<p>Render tweets by hashtag</p>
 
 <h2>
 <a id="development" class="anchor" href="#development" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Development</h2>
 
 <pre><code>git clone git@github.com:tinang/tweetapp.git
 sudo npm install
-sudo npm update -g bower // skip if version is from 1.7.1
+sudo npm update -g bower // skip if version is from 1.7.5
 bower install
 gulp default // including these tasks: webpack, styles, templates, copy, stuffs
 gulp serve // serve app if it's any js/css/html change
@@ -48,12 +48,13 @@ gulp serve // serve app if it's any js/css/html change
 <h2>
 <a id="production" class="anchor" href="#production" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Production</h2>
 
-<p>Just copy <code>dist</code> folder to your root path</p>
+<p>After running <code>gulp default</code>, production <code>dist</code> will be created, then just copy <code>dist</code> folder and run app</p>
 
 <h2>
 <a id="demo" class="anchor" href="#demo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Demo</h2>
 
-<p>Check <code>demo</code> <a href="http://tinang.github.io/tweetapp/demo/index.html" title="Demo">here</a></p>
+<p>A popup will be open to provide authorized access to Twitter Api. Please <strong>allow this popup</strong> on brower.__
+Check <code>demo</code> <a href="http://tinang.github.io/tweetapp/demo" title="Demo">here</a></p>
 
 <h2>
 <a id="more-detail" class="anchor" href="#more-detail" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>More Detail</h2>
@@ -67,8 +68,9 @@ gulp serve // serve app if it's any js/css/html change
 <li>Bootstrap Sass with custom variables <code>bootstrap-custom-variables.scss</code>
 </li>
 <li>Animate.css is a cross-browser library of CSS animations</li>
-<li>Gulp and its plugins</li>
-<li>Others: check out detail on <code>package.json</code> and <code>bower.json</code>
+<li>Gulp and its plugins for development tools</li>
+<li>Bower to install third-party libraries</li>
+<li>Detail third-party libraries: check out detail on <code>package.json</code> and <code>bower.json</code>
 </li>
 </ul>
 </li>
@@ -77,14 +79,30 @@ gulp serve // serve app if it's any js/css/html change
 
 <ul>
 <li>
-<strong>dev</strong> is used for development project with structural</li>
+<strong>dev</strong> is used for development project with separated modules</li>
 <li>
-<code>index.html</code> is main template file, the default starting point</li>
+<code>index.html</code> is the default starting point</li>
 <li>
 <code>app.js</code> is the main javascript file, init app, includes necessary components, define states</li>
 <li>
-<code>styles</code> folder is all sass css files</li>
-<li>others are separated components</li>
+<code>styles</code> folder is all sass css files with <code>main.scss</code> includes sass files, <code>style/styles.scss</code> is main custom style for app</li>
+<li>
+<code>home</code> folder is root component, includes navigation, state content, bottom section</li>
+<li>
+<code>feed</code> folder
+
+<ul>
+<li>
+<code>service.js</code> defines feed services such as get list hashtags, get tweets by hashtag</li>
+<li>
+<code>list.js</code> is main controller for state <code>feed</code>
+</li>
+<li>
+<code>list.html</code> is template file to display tweet data</li>
+</ul>
+</li>
+<li>
+<code>dummy</code> is json file contains dummy hashtags</li>
 </ul>
 </li>
 <li>
@@ -96,8 +114,12 @@ gulp serve // serve app if it's any js/css/html change
 <li>
 <code>app.js</code> is the main javascript file. <code>gulp webpack</code> task will minimize all js files to <code>app.js</code>
 </li>
-<li>The same for <code>main.scss</code>, this file includes all necessary css files and compile to <code>main.css</code> by <code>gulp styles</code> task</li>
-<li>All templates (html file) will be compiled to <code>templates.js</code> by <code>gulp templates</code> tasks</li>
+<li>
+<code>main.scss</code>, this file includes all necessary css files and compile to <code>main.css</code> by <code>gulp styles</code> task</li>
+<li>
+<code>templates.js</code> is compiled from all templates (html files) by <code>gulp templates</code> tasks</li>
+<li>
+<code>js</code>, <code>images</code>, <code>dummy</code>, <code>fonts</code> are stuff folders</li>
 </ul>
 </li>
 </ol>
