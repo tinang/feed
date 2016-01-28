@@ -14,9 +14,9 @@
       </div>
     </div>
 
-    <div class="feed_list row">
+    <div class="feed_list row" ng-if="tweets.length">
       <div ng-repeat="tweet in tweets" class="feed_list_wrapper col-md-8 animated fadeInLeft">
-      	<div class="feed_list__item">
+      	<div class="feed_list__item" ng-class="tweet.specialItem ? 'special': ''">
 
           <div class="profile clearfix">
             <div class="pull-left">
@@ -36,6 +36,6 @@
       </div>
     </div><!--\.feed_list -->
 
-    <button class="btn btn-primary btn-lg" ng-click="loadTweets()">Load older tweets</button>
+    <button class="btn btn-primary btn-lg" ng-click="loadTweets()" ng-if="tweets.length">Load older tweets</button>
   </div>
 </div>

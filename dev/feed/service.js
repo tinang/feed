@@ -46,7 +46,7 @@ function feedService($http, $q) {
       var _opts = {
         'count': 6,
         'include_entities': true,
-        'result_type': 'recent',
+        'result_type': 'mixed',
         'max_id': false
       };
       opts = angular.extend(_opts, opts);
@@ -85,6 +85,12 @@ function queryHashtags(feedService) {
   return feedService.getHashtags();
 }
 
+getConnectStatus.$inject = ["feedService"];
+function getConnectStatus(feedService) {
+  return feedService.isReady();
+}
+
 module.exports = {
-  getHashtags: queryHashtags
+  getHashtags: queryHashtags,
+  connectStatus: getConnectStatus
 }

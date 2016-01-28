@@ -3,6 +3,10 @@
 // =========
 
 .throbber {
-  color: #60cadd;
-  @include position(fixed, 48%, null, null, 48%);
+  color: #4A90E2;
+  z-index: 2;
+  @include position(fixed, 40%, null, null, 45%);
+  padding: 50px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
 }

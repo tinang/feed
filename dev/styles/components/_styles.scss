@@ -74,7 +74,11 @@ body {
 					@include feed-item();
 					// random special item
 					&.special {
-						border: 2px solid rgb((random(256)-1), (random(256)-1), (random(256)-1));
+						@for $i from 1 through $max {
+							&:nth-child(2n + #{$i}) {
+								border-top: 9px solid rgb((random(256) - $i), (random(256) - $i), (random(256) - $i));
+							}
+						}
 					}
 				}
 			}
