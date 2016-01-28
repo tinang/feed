@@ -8,7 +8,7 @@ function homeCtrl($scope, feedService, listHashtags) {
   // Get list hashtags and theirs info
   $scope.listHashtags = listHashtags;
   // Set default hashtag is first item in list
-  $scope.defaultHashtag = $scope.listHashtags ? $scope.listHashtags[0].hashtag : '';
+  $scope.defaultHashtag = $scope.listHashtags[0].hashtag || '';
 }
 
 module.exports = {

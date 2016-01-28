@@ -53,8 +53,15 @@ function states($stateProvider, $urlRouterProvider, $locationProvider) {
 // }
 // mod.config(registerAuthInterceptor);
 
+configGrowlMsg.$inject = ["growlProvider"];
+function configGrowlMsg(growlProvider) {
+  growlProvider.globalDisableCountDown(true)
+               .globalTimeToLive({success: 2000, error: 5000, warning: 5000, info: 5000});;
+}
+
 mod.config(states);
 mod.run(initLoader);
+mod.config(configGrowlMsg);
 
 // Utility functions for app (it should be put in helper lib instead of here)
 mod.filter('displayHtml', ["$sce", function($sce) {

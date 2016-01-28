@@ -4,15 +4,6 @@ function responseData(resp) {
   return resp.data;
 }
 
-var noTokenSet = {
-  data: {
-    error: {
-      message: "No token has been set"
-    }
-  },
-  status: 401
-};
-
 feedService.$inject = ["$http", "$q"];
 function feedService($http, $q) {
   var twitterApi = false;
@@ -35,7 +26,7 @@ function feedService($http, $q) {
             twitterApi = result;
             deferred.resolve();
           } else {
-            return $q.reject(noTokenSet);
+            console.log('Can not connect');
         }
       });
 
@@ -57,7 +48,6 @@ function feedService($http, $q) {
       angular.forEach(opts, function(value, key) {
         url += '&' + key + '=' + value;
       });
-      console.log(url);
 
       var promise = twitterApi.get(url).done(function(data) {
         deferred.resolve(data.statuses);
