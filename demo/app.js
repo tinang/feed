@@ -80,10 +80,11 @@
 	// List states
 	states.$inject = ["$stateProvider", "$urlRouterProvider", "$locationProvider"];
 	function states($stateProvider, $urlRouterProvider, $locationProvider) {
-	  $locationProvider.html5Mode(true);
+	  $locationProvider.html5Mode(false);
 	
-	  var defaultUrl = "/feed/programming"; // assuming that we are in default trend is #programming
+	  var defaultUrl = "/feed?hashtag"; // assuming that we are in default trend is #programming
 	
+	  $urlRouterProvider.when('/feed?hashtag', '/feed/:hashtag');
 	  $urlRouterProvider.when("",  defaultUrl);
 	  $urlRouterProvider.when("/", defaultUrl);
 	
@@ -99,8 +100,15 @@
 	// }
 	// mod.config(registerAuthInterceptor);
 	
+	configGrowlMsg.$inject = ["growlProvider"];
+	function configGrowlMsg(growlProvider) {
+	  growlProvider.globalDisableCountDown(true)
+	               .globalTimeToLive({success: 2000, error: 5000, warning: 5000, info: 3000});;
+	}
+	
 	mod.config(states);
 	mod.run(initLoader);
+	mod.config(configGrowlMsg);
 	
 	// Utility functions for app (it should be put in helper lib instead of here)
 	mod.filter('displayHtml', ["$sce", function($sce) {
@@ -4712,7 +4720,7 @@
 	  // Get list hashtags and theirs info
 	  $scope.listHashtags = listHashtags;
 	  // Set default hashtag is first item in list
-	  $scope.defaultHashtag = $scope.listHashtags ? $scope.listHashtags[0].hashtag : '';
+	  $scope.defaultHashtag = $scope.listHashtags[0].hashtag || '';
 	}
 	
 	module.exports = {
@@ -4733,15 +4741,6 @@
 	function responseData(resp) {
 	  return resp.data;
 	}
-	
-	var noTokenSet = {
-	  data: {
-	    error: {
-	      message: "No token has been set"
-	    }
-	  },
-	  status: 401
-	};
 	
 	feedService.$inject = ["$http", "$q"];
 	function feedService($http, $q) {
@@ -4765,7 +4764,7 @@
 	            twitterApi = result;
 	            deferred.resolve();
 	          } else {
-	            return $q.reject(noTokenSet);
+	            console.log('Can not connect');
 	        }
 	      });
 	
@@ -4776,7 +4775,7 @@
 	      var _opts = {
 	        'count': 6,
 	        'include_entities': true,
-	        'result_type': 'recent',
+	        'result_type': 'mixed',
 	        'max_id': false
 	      };
 	      opts = angular.extend(_opts, opts);
@@ -4787,7 +4786,6 @@
 	      angular.forEach(opts, function(value, key) {
 	        url += '&' + key + '=' + value;
 	      });
-	      console.log(url);
 	
 	      var promise = twitterApi.get(url).done(function(data) {
 	        deferred.resolve(data.statuses);
@@ -4815,8 +4813,14 @@
 	  return feedService.getHashtags();
 	}
 	
+	getConnectStatus.$inject = ["feedService"];
+	function getConnectStatus(feedService) {
+	  return feedService.isReady();
+	}
+	
 	module.exports = {
-	  getHashtags: queryHashtags
+	  getHashtags: queryHashtags,
+	  connectStatus: getConnectStatus
 	}
 
 /***/ },
@@ -4827,41 +4831,54 @@
 	
 	var feed = __webpack_require__(7);
 	
-	feedCtrl.$inject = ["$scope", "$stateParams", "$filter", "feedService", "growl"];
-	function feedCtrl($scope, $stateParams, $filter, feedService, growl) {
+	feedCtrl.$inject = ["$rootScope", "$scope", "$stateParams", "$filter", "feedService", "growl", "connectStatus"];
+	function feedCtrl($rootScope, $scope, $stateParams, $filter, feedService, growl, connectStatus) {
 		// find current hashtag and its data
 	  $scope.hashtag = $stateParams.hashtag ? $stateParams.hashtag : $scope.defaultHashtag;
 	  $scope.hashtagObj = $filter('filter')($scope.listHashtags, {'hashtag': $scope.hashtag})[0];
+	
 	  $scope.tweets = [];
 	  $scope.latestId = null; // save latest tweetId will be max_id for the next query
-	  $scope.loading = true;
 	
-	  //using the OAuth.io to get oauth to access twitter api
-	  feedService.initialize();
-	  feedService.connectTwitter();
+	  if( !connectStatus ) {
+	    growl.info('Connecting to Twitter API. Please allow popup to get oath.');
+	    //using the OAuth.io to get oauth to access twitter api
+	    feedService.initialize();
+	    feedService.connectTwitter();
+	  }
 	
 	  // get tweets by hashtag
 	  $scope.loadTweets = function loadTweets() {
+	    $rootScope.loading = true; // overlay loading
+	
 	    if ($scope.latestId) {
 	      $scope.latestId = parseInt($scope.latestId) - 1;
 	    }
-	    feedService.getTweetsByHashtag($scope.hashtag, { 'max_id': $scope.latestId }).then(function(data) {
-	      var count = data.length;
-	      if (count) {
-	        if ($scope.tweets.length === 0) {
-	          $scope.tweets = data;
+	    feedService.getTweetsByHashtag($scope.hashtag, { 'max_id': $scope.latestId }).then(
+	      function(data) {
+	        $rootScope.loading = false; // disable overlay loading
+	
+	        var count = data.length;
+	        if (count) {
+	          // make random item is special for data
+	          var rand = Math.floor((Math.random() * count));
+	          data[rand].specialColor = '#'+Math.floor(Math.random()*16777215).toString(16);
+	
+	          // the first time
+	          if ($scope.tweets.length === 0) {
+	            $scope.tweets = data;
+	          } else { // second and more...
+	            $scope.tweets = $scope.tweets.concat(data);
+	          }
+	
+	          $scope.latestId = data[count - 1].id;
 	        } else {
-	          $scope.tweets = $scope.tweets.concat(data);
+	          growl.warning('No data');
 	        }
 	
-	        $scope.latestId = data[count - 1].id;
-	        console.log(typeof(data));
-	        console.log('New result: ', data);
-	      } else {
-	        growl.addErrorMessage('No data');
-	      }
-	
-	      $scope.loading = false;
+	        $scope.loading = false;
+	      }, function() {
+	        $rootScope.loading = false;
 	    });
 	  }
 	
@@ -4872,7 +4889,10 @@
 	module.exports = {
 	  url: "/feed/:hashtag",
 	  templateUrl: "feed/list.html",
-	  controller: feedCtrl
+	  controller: feedCtrl,
+	  resolve: {
+	    connectStatus: feed.connectStatus
+	  }
 	};
 
 /***/ }
