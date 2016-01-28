@@ -53,12 +53,12 @@
 	__webpack_require__(5);
 	
 	// registering and retrieving necessary modules
-	var mod = angular.module("mokusApp", ["ui.router", "ngSanitize", "ui.bootstrap", "ngTwitter"]);
+	var mod = angular.module("mokusApp", ["ui.router", "ngSanitize", "ui.bootstrap", "angular-growl"]);
 	
 	// require all necessary states
-	var auth = __webpack_require__(6);
-	var home = __webpack_require__(7);
-	var feed = __webpack_require__(9);
+	// var auth = require("home/auth");
+	var home = __webpack_require__(6);
+	var feed = __webpack_require__(8);
 	
 	// Show/hide spinner icon when starting a new state
 	initLoader.$inject = ["$rootScope"];
@@ -93,8 +93,21 @@
 	  $urlRouterProvider.otherwise(defaultUrl);
 	}
 	
+	// registerAuthInterceptor.$inject = ["$httpProvider"];
+	// function registerAuthInterceptor($httpProvider) {
+	//   $httpProvider.interceptors.push(auth);
+	// }
+	// mod.config(registerAuthInterceptor);
+	
 	mod.config(states);
 	mod.run(initLoader);
+	
+	// Utility functions for app (it should be put in helper lib instead of here)
+	mod.filter('displayHtml', ["$sce", function($sce) {
+	  return function(htmlString) {
+	    return $sce.trustAsHtml(htmlString);
+	  }
+	}]);
 
 /***/ },
 /* 1 */
@@ -4678,97 +4691,20 @@
 /* 5 */
 /***/ function(module, exports) {
 
-	// ng-twitter-api - v0.1.5 (2015-09-02)
-	// http://www.devdactic.com
-	angular.module("twitter.functions",[]).factory("$twitterApi",["$q","$twitterHelpers","$http",function(a,b,c){function d(d,e,i){var j=a.defer();"undefined"==typeof i&&(i={}),"undefined"==typeof e&&(e={});var k=angular.extend(i,e);return b.createTwitterSignature("GET",d,k,g,h,f),c({method:"GET",url:d,params:k}).success(function(a,b,c,d){j.resolve(a)}).error(function(a,b,c,d){401===b&&(f=null),j.reject(b)}),j.promise}function e(d,e,i){var j=a.defer();"undefined"==typeof i&&(i={});var k=angular.extend(i,e);b.createTwitterSignature("POST",d,k,g,h,f);return k!=={}&&(d=d+"?"+b.transformRequest(k)),c.post(d,k).success(function(a,b,c,d){j.resolve(a)}).error(function(a,b,c,d){401===b&&(f=null),j.reject(b)}),j.promise}var f,g="",h="",i="https://api.twitter.com/1.1/statuses/home_timeline.json",j="https://api.twitter.com/1.1/search/tweets.json",k="https://api.twitter.com/1.1/statuses/update.json",l="https://api.twitter.com/1.1/statuses/mentions_timeline.json",m="https://api.twitter.com/1.1/statuses/user_timeline.json",n="https://api.twitter.com/1.1/users/show.json";return{configure:function(a,b,c){g=a,h=b,f=c},getHomeTimeline:function(a){return d(i,a)},getMentionsTimeline:function(a){return d(l,a)},getUserTimeline:function(a){return d(m,a)},searchTweets:function(a,b){return d(j,{q:a},b)},postStatusUpdate:function(a,b){return e(k,{status:a},b)},getUserDetails:function(a,b){return d(n,{user_id:a},b)},getRequest:d,postRequest:e}}]),angular.module("ngTwitter",["twitter.functions","twitter.utils"]),angular.module("twitter.utils",[]).factory("$twitterHelpers",["$q","$http",function(a,b){function c(a,b,c,d,f,g){if("undefined"!=typeof jsSHA){for(var h=angular.copy(c),i=Object.keys(d),j=0;j<i.length;j++)h[i[j]]=e(d[i[j]]);var k=a+"&"+encodeURIComponent(b)+"&",l=Object.keys(h).sort();for(j=0;j<l.length;j++)k+=j==l.length-1?encodeURIComponent(l[j]+"="+h[l[j]]):encodeURIComponent(l[j]+"="+h[l[j]]+"&");var m=new jsSHA(k,"TEXT"),n="";g&&(n=encodeURIComponent(g)),c.oauth_signature=encodeURIComponent(m.getHMAC(encodeURIComponent(f)+"&"+n,"TEXT","SHA-1","B64"));var o=Object.keys(c),p="OAuth ";for(j=0;j<o.length;j++)p+=j==o.length-1?o[j]+'="'+c[o[j]]+'"':o[j]+'="'+c[o[j]]+'",';return{signature_base_string:k,authorization_header:p,signature:c.oauth_signature}}return"Missing jsSHA JavaScript library"}function d(a){for(var b="",c="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",d=0;a>d;d++)b+=c.charAt(Math.floor(Math.random()*c.length));return b}function e(a){var b=encodeURIComponent(a);return b=b.replace(/\!/g,"%21"),b=b.replace(/\'/g,"%27"),b=b.replace(/\(/g,"%28"),b=b.replace(/\)/g,"%29"),b=b.replace(/\*/g,"%2A")}function f(a){var b=[];for(var c in a)b.push(encodeURIComponent(c)+"="+e(a[c]));return console.log(b.join("&")),b.join("&")}return{createTwitterSignature:function(a,e,f,g,h,i){var j={oauth_consumer_key:g,oauth_nonce:d(10),oauth_signature_method:"HMAC-SHA1",oauth_token:i.oauth_token,oauth_timestamp:Math.round((new Date).getTime()/1e3),oauth_version:"1.0"},k=c(a,e,j,f,h,i.oauth_token_secret);return b.defaults.headers.common.Authorization=k.authorization_header,k},transformRequest:f}}]);
+	/**
+	 * angular-growl-v2 - v0.7.8 - 2015-10-25
+	 * http://janstevens.github.io/angular-growl-2
+	 * Copyright (c) 2015 Marco Rinck,Jan Stevens,Silvan van Leeuwen; Licensed MIT
+	 */
+	angular.module("angular-growl",[]),angular.module("angular-growl").directive("growl",[function(){"use strict";return{restrict:"A",templateUrl:"templates/growl/growl.html",replace:!1,scope:{reference:"@",inline:"=",limitMessages:"="},controller:["$scope","$interval","growl","growlMessages",function(a,b,c,d){a.referenceId=a.reference||0,d.initDirective(a.referenceId,a.limitMessages),a.growlMessages=d,a.inlineMessage=angular.isDefined(a.inline)?a.inline:c.inlineMessages(),a.$watch("limitMessages",function(b){var c=d.directives[a.referenceId];angular.isUndefined(b)||angular.isUndefined(c)||(c.limitMessages=b)}),a.stopTimeoutClose=function(a){a.clickToClose||(angular.forEach(a.promises,function(a){b.cancel(a)}),a.close?d.deleteMessage(a):a.close=!0)},a.alertClasses=function(a){return{"alert-success":"success"===a.severity,"alert-error":"error"===a.severity,"alert-danger":"error"===a.severity,"alert-info":"info"===a.severity,"alert-warning":"warning"===a.severity,icon:a.disableIcons===!1,"alert-dismissable":!a.disableCloseButton}},a.showCountDown=function(a){return!a.disableCountDown&&a.ttl>0},a.wrapperClasses=function(){var b={};return b["growl-fixed"]=!a.inlineMessage,b[c.position()]=!0,b},a.computeTitle=function(a){var b={success:"Success",error:"Error",info:"Information",warn:"Warning"};return b[a.severity]}}]}}]),angular.module("angular-growl").run(["$templateCache",function(a){"use strict";void 0===a.get("templates/growl/growl.html")&&a.put("templates/growl/growl.html",'<div class="growl-container" ng-class="wrapperClasses()"><div class="growl-item alert" ng-repeat="message in growlMessages.directives[referenceId].messages" ng-class="alertClasses(message)" ng-click="stopTimeoutClose(message)"><button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="growlMessages.deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button><button type="button" class="close" aria-hidden="true" ng-show="showCountDown(message)">{{message.countdown}}</button><h4 class="growl-title" ng-show="message.title" ng-bind="message.title"></h4><div class="growl-message" ng-bind-html="message.text"></div></div></div>')}]),angular.module("angular-growl").provider("growl",function(){"use strict";var a={success:null,error:null,warning:null,info:null},b="messages",c="text",d="title",e="severity",f="ttl",g=!0,h="variables",i=0,j=!1,k="top-right",l=!1,m=!1,n=!1,o=!1,p=!0;this.globalTimeToLive=function(b){if("object"==typeof b)for(var c in b)b.hasOwnProperty(c)&&(a[c]=b[c]);else for(var d in a)a.hasOwnProperty(d)&&(a[d]=b);return this},this.globalTranslateMessages=function(a){return p=a,this},this.globalDisableCloseButton=function(a){return l=a,this},this.globalDisableIcons=function(a){return m=a,this},this.globalReversedOrder=function(a){return n=a,this},this.globalDisableCountDown=function(a){return o=a,this},this.messageVariableKey=function(a){return h=a,this},this.globalInlineMessages=function(a){return j=a,this},this.globalPosition=function(a){return k=a,this},this.messagesKey=function(a){return b=a,this},this.messageTextKey=function(a){return c=a,this},this.messageTitleKey=function(a){return d=a,this},this.messageSeverityKey=function(a){return e=a,this},this.messageTTLKey=function(a){return f=a,this},this.onlyUniqueMessages=function(a){return g=a,this},this.serverMessagesInterceptor=["$q","growl",function(a,c){function d(a){void 0!==a&&a.data&&a.data[b]&&a.data[b].length>0&&c.addServerMessages(a.data[b])}return{response:function(a){return d(a),a},responseError:function(b){return d(b),a.reject(b)}}}],this.$get=["$rootScope","$interpolate","$sce","$filter","$interval","growlMessages",function(b,q,r,s,t,u){function v(a){if(H&&a.translateMessage)a.text=H(a.text,a.variables)||a.text,a.title=H(a.title)||a.title;else{var c=q(a.text);a.text=c(a.variables)}var d=u.addMessage(a);return b.$broadcast("growlMessage",a),t(function(){},0,1),d}function w(b,c,d){var e,f=c||{};return e={text:b,title:f.title,severity:d,ttl:f.ttl||a[d],variables:f.variables||{},disableCloseButton:void 0===f.disableCloseButton?l:f.disableCloseButton,disableIcons:void 0===f.disableIcons?m:f.disableIcons,disableCountDown:void 0===f.disableCountDown?o:f.disableCountDown,position:f.position||k,referenceId:f.referenceId||i,translateMessage:void 0===f.translateMessage?p:f.translateMessage,destroy:function(){u.deleteMessage(e)},setText:function(a){e.text=r.trustAsHtml(String(a))},onclose:f.onclose,onopen:f.onopen},v(e)}function x(a,b){return w(a,b,"warning")}function y(a,b){return w(a,b,"error")}function z(a,b){return w(a,b,"info")}function A(a,b){return w(a,b,"success")}function B(a,b,c){return c=(c||"error").toLowerCase(),w(a,b,c)}function C(a){if(a&&a.length){var b,g,i,j;for(j=a.length,b=0;j>b;b++)if(g=a[b],g[c]){i=(g[e]||"error").toLowerCase();var k={};k.variables=g[h]||{},k.title=g[d],g[f]&&(k.ttl=g[f]),w(g[c],k,i)}}}function D(){return g}function E(){return n}function F(){return j}function G(){return k}var H;u.onlyUnique=g,u.reverseOrder=n;try{H=s("translate")}catch(I){}return{warning:x,error:y,info:z,success:A,general:B,addServerMessages:C,onlyUnique:D,reverseOrder:E,inlineMessages:F,position:G}}]}),angular.module("angular-growl").service("growlMessages",["$sce","$interval",function(a,b){"use strict";function c(a){var b;return b=f[a]?f[a]:f[a]={messages:[]}}function d(a){var b=a||0;return e.directives[b]||f[b]}var e=this;this.directives={};var f={};this.initDirective=function(a,b){return f[a]?(this.directives[a]=f[a],this.directives[a].limitMessages=b):this.directives[a]={messages:[],limitMessages:b},this.directives[a]},this.getAllMessages=function(a){a=a||0;var b;return b=d(a)?d(a).messages:[]},this.destroyAllMessages=function(a){for(var b=this.getAllMessages(a),c=b.length-1;c>=0;c--)b[c].destroy();var e=d(a);e&&(e.messages=[])},this.addMessage=function(d){var e,f,g,h;if(e=this.directives[d.referenceId]?this.directives[d.referenceId]:c(d.referenceId),f=e.messages,!this.onlyUnique||(angular.forEach(f,function(b){h=a.getTrustedHtml(b.text),d.text===h&&d.severity===b.severity&&d.title===b.title&&(g=!0)}),!g)){if(d.text=a.trustAsHtml(String(d.text)),d.ttl&&-1!==d.ttl&&(d.countdown=d.ttl/1e3,d.promises=[],d.close=!1,d.countdownFunction=function(){d.countdown>1?(d.countdown--,d.promises.push(b(d.countdownFunction,1e3,1,1))):d.countdown--}),angular.isDefined(e.limitMessages)){var i=f.length-(e.limitMessages-1);i>0&&f.splice(e.limitMessages-1,i)}if(this.reverseOrder?f.unshift(d):f.push(d),"function"==typeof d.onopen&&d.onopen(),d.ttl&&-1!==d.ttl){var j=this;d.promises.push(b(angular.bind(this,function(){j.deleteMessage(d)}),d.ttl,1,1)),d.promises.push(b(d.countdownFunction,1e3,1,1))}return d}},this.deleteMessage=function(a){var b=this.getAllMessages(a.referenceId),c=-1;for(var d in b)b.hasOwnProperty(d)&&(c=b[d]===a?d:c);c>-1&&(b[c].close=!0,b.splice(c,1)),"function"==typeof a.onclose&&a.onclose()}}]);
 
 /***/ },
 /* 6 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	// var twitterKey = 'STORAGE.TWITTER.KEY';
-	// var clientId = 'O8EbM93iRY7cEffowYDRL7KCM';
-	// var clientSecret = 'NjjeWr9BoHkbOGhEjKUSwNJ2UpzeX6cjyW5wC7LVsFZfZMODai';
-	// var tokens = {};
-	//     tokens.ConsumerKey = "O8EbM93iRY7cEffowYDRL7KCM";
-	//     tokens.ConsumerSecret = "NjjeWr9BoHkbOGhEjKUSwNJ2UpzeX6cjyW5wC7LVsFZfZMODai";
-	//     tokens.AccessToken = "18350055-RLe98E8gLxyZpdqCnqQfzbn8ce6hwF2odQrfMGepc";
-	//     tokens.AccessTokenSecret = "xp0g7CeWIDrZHjJCsZtJpdu6oXkuf8fMlrAIePZtkgVb5";
-	
-	// AuthInterceptor.$inject = ["$window", "$q", "$twitterApi"];
-	// function AuthInterceptor($window, $q, $twitterApi) {
-	//   $twitterApi.configure(clientId, clientSecret, tokens);
-	// }
-	
-	// module.exports = AuthInterceptor;
-	
-	
-	angular.module('twitterApp.services', []).factory('twitterService', function($q) {
-	
-	    var authorizationResult = false;
-	
-	    return {
-	        initialize: function() {
-	            //initialize OAuth.io with public key of the application
-	            OAuth.initialize('KqkVRr6ogHUio7LoO6UXZX-YcTs', {
-	                cache: true
-	            });
-	            //try to create an authorization result when the page loads,
-	            // this means a returning user won't have to click the twitter button again
-	            authorizationResult = OAuth.create("twitter");
-	        },
-	        isReady: function() {
-	            return (authorizationResult);
-	        },
-	        connectTwitter: function() {
-	            var deferred = $q.defer();
-	            OAuth.popup("twitter", {
-	                cache: true
-	            }, function(error, result) {
-	                // cache means to execute the callback if the tokens are already present
-	                if (!error) {
-	                    authorizationResult = result;
-	                    deferred.resolve();
-	                } else {
-	                    //do something if there's an error
-	
-	                }
-	            });
-	            return deferred.promise;
-	        },
-	        clearCache: function() {
-	            OAuth.clearCache('twitter');
-	            authorizationResult = false;
-	        },
-	        getLatestTweets: function(maxId) {
-	            //create a deferred object using Angular's $q service
-	            var deferred = $q.defer();
-	            var url = '/1.1/statuses/home_timeline.json';
-	            if (maxId) {
-	                url += '?max_id=' + maxId;
-	            }
-	            var promise = authorizationResult.get(url).done(function(data) {
-	                // https://dev.twitter.com/docs/api/1.1/get/statuses/home_timeline
-	                // when the data is retrieved resolve the deferred object
-	                deferred.resolve(data);
-	            }).fail(function(err) {
-	                deferred.reject(err);
-	            });
-	            //return the promise of the deferred object
-	            return deferred.promise;
-	        }
-	    }
-	});
-
-/***/ },
-/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
-	var feed = __webpack_require__(8);
+	var feed = __webpack_require__(7);
 	
 	// This is main controller, main state for all states
 	homeCtrl.$inject = ["$scope", "feedService", "listHashtags"];
@@ -4789,7 +4725,7 @@
 	};
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -4798,39 +4734,67 @@
 	  return resp.data;
 	}
 	
-	feedService.$inject = ["$http", "$twitterApi", "$q"];
-	function feedService($http, $twitterApi, $q) {
-	  var authorizationResult = false;
+	var noTokenSet = {
+	  data: {
+	    error: {
+	      message: "No token has been set"
+	    }
+	  },
+	  status: 401
+	};
+	
+	feedService.$inject = ["$http", "$q"];
+	function feedService($http, $q) {
+	  var twitterApi = false;
 	
 	  return {
 	    initialize: function() {
 	      //initialize OAuth.io with public key of the application
-	      OAuth.initialize('KqkVRr6ogHUio7LoO6UXZX-YcTs', {
-	          cache: false
-	      });
-	      //try to create an authorization result when the page loads,
-	      // this means a returning user won't have to click the twitter button again
-	      authorizationResult = OAuth.create("twitter");
+	      OAuth.initialize('KqkVRr6ogHUio7LoO6UXZX-YcTs', { cache: true });
+	      twitterApi = OAuth.create("twitter");
 	    },
 	    isReady: function() {
-	      return (authorizationResult);
+	      return (twitterApi);
 	    },
-	    getLatestTweets: function(maxId) {
-	      //create a deferred object using Angular's $q service
+	    connectTwitter: function() {
 	      var deferred = $q.defer();
-	      var url = '/1.1/statuses/home_timeline.json';
-	      if (maxId) {
-	          url += '?max_id=' + maxId;
-	      }
-	      var promise = authorizationResult.get(url).done(function(data) {
-	        // https://dev.twitter.com/docs/api/1.1/get/statuses/home_timeline
-	        // when the data is retrieved resolve the deferred object
-	        deferred.resolve(data);
+	      OAuth.popup("twitter", {
+	        cache: true
+	      }, function(error, result) {
+	          if (!error) {
+	            twitterApi = result;
+	            deferred.resolve();
+	          } else {
+	            return $q.reject(noTokenSet);
+	        }
+	      });
+	
+	      return deferred.promise;
+	    },
+	    // get tweets by specific hashtag
+	    getTweetsByHashtag: function(hashtag, opts) {
+	      var _opts = {
+	        'count': 6,
+	        'include_entities': true,
+	        'result_type': 'recent',
+	        'max_id': false
+	      };
+	      opts = angular.extend(_opts, opts);
+	
+	      var deferred = $q.defer();
+	      var url = '/1.1/search/tweets.json' + '?q=%23' + hashtag;
+	      // loop param query
+	      angular.forEach(opts, function(value, key) {
+	        url += '&' + key + '=' + value;
+	      });
+	      console.log(url);
+	
+	      var promise = twitterApi.get(url).done(function(data) {
+	        deferred.resolve(data.statuses);
 	      }).fail(function(err) {
 	        deferred.reject(err);
 	      });
 	
-	      //return the promise of the deferred object
 	      return deferred.promise;
 	    },
 	    // Get list hashtags from dummy data
@@ -4839,12 +4803,6 @@
 	        method: "GET",
 	        url: "dummy/hashtags.json"
 	      }).then(responseData);
-	    },
-	    // get tweets by specific hashtag
-	    getTweetsByHashtag: function(hashtag) {
-	      console.log('Param: ', hashtag);
-	      // $twitterApi.configure(clientId, clientSecret, oauthToken);
-	      // $twitterApi.searchTweets(hashtag, {count: 6}).then(responseData);
 	    }
 	  }
 	}
@@ -4857,53 +4815,64 @@
 	  return feedService.getHashtags();
 	}
 	
-	queryTweetsByHashtag.$inject = ["$stateParams", "feedService"];
-	function queryTweetsByHashtag($stateParams, feedService) {
-	  return feedService.getTweetsByHashtag($stateParams.hashtag);
-	}
-	
 	module.exports = {
-	  getHashtags: queryHashtags,
-	  getTweets: queryTweetsByHashtag
+	  getHashtags: queryHashtags
 	}
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
-	var feed = __webpack_require__(8);
+	var feed = __webpack_require__(7);
 	
-	feedCtrl.$inject = ["$scope", "$stateParams", "$filter", "feedService", "tweets"];
-	function feedCtrl($scope, $stateParams, $filter, feedService, tweets) {
+	feedCtrl.$inject = ["$scope", "$stateParams", "$filter", "feedService", "growl"];
+	function feedCtrl($scope, $stateParams, $filter, feedService, growl) {
 		// find current hashtag and its data
 	  $scope.hashtag = $stateParams.hashtag ? $stateParams.hashtag : $scope.defaultHashtag;
 	  $scope.hashtagObj = $filter('filter')($scope.listHashtags, {'hashtag': $scope.hashtag})[0];
+	  $scope.tweets = [];
+	  $scope.latestId = null; // save latest tweetId will be max_id for the next query
+	  $scope.loading = true;
+	
+	  //using the OAuth.io to get oauth to access twitter api
+	  feedService.initialize();
+	  feedService.connectTwitter();
 	
 	  // get tweets by hashtag
-	  $scope.tweets = tweets;
-	  console.log('Feed: ', tweets);
+	  $scope.loadTweets = function loadTweets() {
+	    if ($scope.latestId) {
+	      $scope.latestId = parseInt($scope.latestId) - 1;
+	    }
+	    feedService.getTweetsByHashtag($scope.hashtag, { 'max_id': $scope.latestId }).then(function(data) {
+	      var count = data.length;
+	      if (count) {
+	        if ($scope.tweets.length === 0) {
+	          $scope.tweets = data;
+	        } else {
+	          $scope.tweets = $scope.tweets.concat(data);
+	        }
 	
-	  $scope.tweets = []; //array of tweets
+	        $scope.latestId = data[count - 1].id;
+	        console.log(typeof(data));
+	        console.log('New result: ', data);
+	      } else {
+	        growl.addErrorMessage('No data');
+	      }
 	
-	  feedService.initialize();
+	      $scope.loading = false;
+	    });
+	  }
 	
-	  //using the OAuth authorization result get the latest 20 tweets from twitter for the user
-	  feedService.getLatestTweets(10).then(function(data) {
-	    console.log(data);
-	  }, function() {
-	    console.log('error');
-	  });
+	  // Init data for the first time
+	  $scope.loadTweets();
 	}
 	
 	module.exports = {
 	  url: "/feed/:hashtag",
 	  templateUrl: "feed/list.html",
-	  controller: feedCtrl,
-	  resolve: {
-	    tweets: feed.getTweets
-		}
+	  controller: feedCtrl
 	};
 
 /***/ }
