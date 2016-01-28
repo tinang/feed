@@ -34,10 +34,11 @@ function initLoader($rootScope) {
 // List states
 states.$inject = ["$stateProvider", "$urlRouterProvider", "$locationProvider"];
 function states($stateProvider, $urlRouterProvider, $locationProvider) {
-  $locationProvider.html5Mode(true);
+  $locationProvider.html5Mode(false);
 
-  var defaultUrl = "/feed/programming"; // assuming that we are in default trend is #programming
+  var defaultUrl = "/feed?hashtag"; // assuming that we are in default trend is #programming
 
+  $urlRouterProvider.when('/feed?hashtag', '/feed/:hashtag');
   $urlRouterProvider.when("",  defaultUrl);
   $urlRouterProvider.when("/", defaultUrl);
 
@@ -56,7 +57,7 @@ function states($stateProvider, $urlRouterProvider, $locationProvider) {
 configGrowlMsg.$inject = ["growlProvider"];
 function configGrowlMsg(growlProvider) {
   growlProvider.globalDisableCountDown(true)
-               .globalTimeToLive({success: 2000, error: 5000, warning: 5000, info: 5000});;
+               .globalTimeToLive({success: 2000, error: 5000, warning: 5000, info: 3000});;
 }
 
 mod.config(states);
