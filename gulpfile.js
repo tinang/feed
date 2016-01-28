@@ -38,6 +38,7 @@ var webpackConfig = {
       "angular-bootstrap": "bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js",
       "ng-twitter-api":    "bower_components/ng-twitter-api/dist/ng-twitter-api.min.js",
       "jsSHA":             "bower_components/jsSHA/src/sha1.js",
+      "angular-growl":     "bower_components/angular-growl-2/build/angular-growl.min.js"
     }
   },
   plugins: [

@@ -4,10 +4,10 @@ require("angular");
 require("ui-router");
 require("angular-sanitize");
 require("angular-bootstrap");
-require("ng-twitter-api");
+require("angular-growl");
 
 // registering and retrieving necessary modules
-var mod = angular.module("mokusApp", ["ui.router", "ngSanitize", "ui.bootstrap", "ngTwitter"]);
+var mod = angular.module("mokusApp", ["ui.router", "ngSanitize", "ui.bootstrap", "angular-growl"]);
 
 // require all necessary states
 // var auth = require("home/auth");

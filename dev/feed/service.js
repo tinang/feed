@@ -4,6 +4,15 @@ function responseData(resp) {
   return resp.data;
 }
 
+var noTokenSet = {
+  data: {
+    error: {
+      message: "No token has been set"
+    }
+  },
+  status: 401
+};
+
 feedService.$inject = ["$http", "$q"];
 function feedService($http, $q) {
   var twitterApi = false;
@@ -12,8 +21,6 @@ function feedService($http, $q) {
     initialize: function() {
       //initialize OAuth.io with public key of the application
       OAuth.initialize('KqkVRr6ogHUio7LoO6UXZX-YcTs', { cache: true });
-      //try to create an authorization result when the page loads,
-      // this means a returning user won't have to click the twitter button again
       twitterApi = OAuth.create("twitter");
     },
     isReady: function() {
@@ -24,21 +31,33 @@ function feedService($http, $q) {
       OAuth.popup("twitter", {
         cache: true
       }, function(error, result) {
-          // cache means to execute the callback if the tokens are already present
           if (!error) {
             twitterApi = result;
             deferred.resolve();
           } else {
-              //do something if there's an error
+            return $q.reject(noTokenSet);
+        }
+      });
 
-            }
-          });
       return deferred.promise;
     },
     // get tweets by specific hashtag
-    getTweetsByHashtag: function(hashtag) {
+    getTweetsByHashtag: function(hashtag, opts) {
+      var _opts = {
+        'count': 6,
+        'include_entities': true,
+        'result_type': 'recent',
+        'max_id': false
+      };
+      opts = angular.extend(_opts, opts);
+
       var deferred = $q.defer();
-      var url = '/1.1/search/tweets.json?q=%23' + hashtag;
+      var url = '/1.1/search/tweets.json' + '?q=%23' + hashtag;
+      // loop param query
+      angular.forEach(opts, function(value, key) {
+        url += '&' + key + '=' + value;
+      });
+      console.log(url);
 
       var promise = twitterApi.get(url).done(function(data) {
         deferred.resolve(data.statuses);
