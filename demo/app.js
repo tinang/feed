@@ -4831,8 +4831,8 @@
 	
 	var feed = __webpack_require__(7);
 	
-	feedCtrl.$inject = ["$rootScope", "$scope", "$stateParams", "$filter", "feedService", "growl", "connectStatus"];
-	function feedCtrl($rootScope, $scope, $stateParams, $filter, feedService, growl, connectStatus) {
+	feedCtrl.$inject = ["$rootScope", "$scope", "$state", "$stateParams", "$filter", "feedService", "growl", "connectStatus"];
+	function feedCtrl($rootScope, $scope, $state, $stateParams, $filter, feedService, growl, connectStatus) {
 		// find current hashtag and its data
 	  $scope.hashtag = $stateParams.hashtag ? $stateParams.hashtag : $scope.defaultHashtag;
 	  $scope.hashtagObj = $filter('filter')($scope.listHashtags, {'hashtag': $scope.hashtag})[0];
@@ -4844,7 +4844,10 @@
 	    growl.info('Connecting to Twitter API. Please allow popup to get oath.');
 	    //using the OAuth.io to get oauth to access twitter api
 	    feedService.initialize();
-	    feedService.connectTwitter();
+	    feedService.connectTwitter().then(function() { // reload page after connected
+	      growl.success('Conected');
+	      $state.reload();
+	    });
 	  }
 	
 	  // get tweets by hashtag
