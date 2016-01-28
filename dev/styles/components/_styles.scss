@@ -12,20 +12,6 @@ body {
 	padding-top: 55px;
 }
 
-/* Header section */
-nav {
-	.nav {
-		li {
-			a {
-				outline: 0;
-				&::before {
-					content: '#';
-				}
-			}
-		}
-	}
-}
-
 /* Main content */
 .wrapper {
 	width: 100%;
@@ -43,7 +29,7 @@ nav {
 			// Description on top
 			&_desc {
 				color: $white;
-				padding: 0 0 75px 0;
+				padding: 0 0 77px 0;
 				text-shadow: $text-shadow;
 				&__heading {
 					font-size: $font-size-supper;
@@ -123,6 +109,20 @@ nav {
 				> p {
 					line-height: 27px;
 					margin-bottom: 30px;
+				}
+			}
+		}
+	}
+}
+
+/* Header section */
+nav {
+	.nav {
+		li {
+			a {
+				outline: 0;
+				&::before {
+					content: '#';
 				}
 			}
 		}

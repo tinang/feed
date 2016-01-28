@@ -10,7 +10,7 @@ require("ng-twitter-api");
 var mod = angular.module("mokusApp", ["ui.router", "ngSanitize", "ui.bootstrap", "ngTwitter"]);
 
 // require all necessary states
-var auth = require("home/auth");
+// var auth = require("home/auth");
 var home = require("home/home");
 var feed = require("feed/list");
 
@@ -47,5 +47,18 @@ function states($stateProvider, $urlRouterProvider, $locationProvider) {
   $urlRouterProvider.otherwise(defaultUrl);
 }
 
+// registerAuthInterceptor.$inject = ["$httpProvider"];
+// function registerAuthInterceptor($httpProvider) {
+//   $httpProvider.interceptors.push(auth);
+// }
+// mod.config(registerAuthInterceptor);
+
 mod.config(states);
 mod.run(initLoader);
+
+// Utility functions for app (it should be put in helper lib instead of here)
+mod.filter('displayHtml', ["$sce", function($sce) {
+  return function(htmlString) {
+    return $sce.trustAsHtml(htmlString);
+  }
+}]);

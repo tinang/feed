@@ -8,44 +8,33 @@
         </div>
         <div class="feed_desc__info animated zoomIn">
           <span ng-repeat="info in hashtagObj.info">
-          	<a href="{{info.link}}" target="_blank">{{ info.text }}</a>
+          	<a href="{{ info.link }}" target="_blank">{{ info.text }}</a>
           </span>
         </div>
       </div>
     </div>
 
     <div class="feed_list row">
-      <div class="feed_list_wrapper col-md-8 animated fadeInLeft">
+      <div ng-repeat="tweet in tweets" class="feed_list_wrapper col-md-8 animated fadeInLeft">
       	<div class="feed_list__item">
-      		content
+
+          <div class="profile clearfix">
+            <div class="pull-left">
+              <a class="profile_fullname" href="https://twitter.com/{{ tweet.user.screen_name }}" target="_blank">{{ tweet.user.name }}</a>
+              <span class="profile_nickname">{{ tweet.user.screen_name }} {{ tweet.user.create_at }}</span>
+            </div>
+            <img class="pull-right" src="{{ tweet.user.profile_image_url }}" alt="{{ tweet.user.name }}">
+          </div>
+
+          <div class="content" ng-bind-html="tweet.text | displayHtml"></div>
+          <div class="bottom">
+            <a href="https://twitter.com/intent/tweet?in_reply_to={{ tweet.id }}"><i class="fa fa-reply"></i></a>
+            <a href="https://twitter.com/intent/retweet?tweet_id={{ tweet.id }}"><i class="fa fa-retweet"></i></a>
+            <a href="https://twitter.com/intent/like?tweet_id={{ tweet.id }}"><i class="fa fa-heart"></i></a>
+          </div>
       	</div>
       </div>
-      <div class="feed_list_wrapper col-md-8 animated fadeInLeft">
-      	<div class="feed_list__item">
-      		content
-      	</div>
-      </div>
-      <div class="feed_list_wrapper col-md-8 animated fadeInLeft">
-      	<div class="feed_list__item">
-      		content
-      	</div>
-      </div>
-      <div class="feed_list_wrapper col-md-8 animated fadeInLeft">
-      	<div class="feed_list__item">
-      		content
-      	</div>
-      </div>
-      <div class="feed_list_wrapper col-md-8 animated fadeInLeft">
-      	<div class="feed_list__item">
-      		content
-      	</div>
-      </div>
-      <div class="feed_list_wrapper col-md-8 animated fadeInLeft">
-      	<div class="feed_list__item">
-      		content
-      	</div>
-      </div>
-    </div>
+    </div><!--\.feed_list -->
 
     <button class="btn btn-primary btn-lg">Load older tweets</button>
   </div>
