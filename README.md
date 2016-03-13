@@ -18,7 +18,7 @@ If app is not root path, please update `base` url on `index.html`
 
 ## Demo
 Please **allow popup** to provide authorized access to Twitter Api.
-Check [`demo`] (http://tinang.github.io/tweetapp/demo "Demo")
+Check [`LIVE DEMO`] (http://tinang.github.io/tweetapp/demo "DEMO")
 
 ## More Detail
 
